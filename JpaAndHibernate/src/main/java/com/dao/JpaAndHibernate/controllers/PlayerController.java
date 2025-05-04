@@ -5,6 +5,7 @@ import com.dao.JpaAndHibernate.mapper.Mapper;
 import com.dao.JpaAndHibernate.domain.PlayerEntity;
 import com.dao.JpaAndHibernate.services.PlayerService;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class PlayerController {
+
 
     private Mapper<PlayerEntity,PlayerDTO> playerMapperImpl;
     private PlayerService playerService;
@@ -40,6 +42,14 @@ public class PlayerController {
         else{
         return new ResponseEntity<>(playerMapperImpl.mapTo(savedPlayerEntity),HttpStatus.CREATED);
     }
+    }
+
+    @Value("${customer.variable.get}")
+    private String helloString;
+
+    @GetMapping("/HelloWorld")
+    public ResponseEntity<String> helloWorld(){
+        return new ResponseEntity<>(helloString,HttpStatus.OK);
     }
 
     @GetMapping("/players")
