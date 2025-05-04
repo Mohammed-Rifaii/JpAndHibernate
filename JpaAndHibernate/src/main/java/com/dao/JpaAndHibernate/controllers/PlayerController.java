@@ -47,7 +47,7 @@ public class PlayerController {
     @Value("${customer.variable.get}")
     private String helloString;
 
-    @GetMapping("/HelloWorld")
+    @GetMapping("/HelloWorlds")
     public ResponseEntity<String> helloWorld(){
         return new ResponseEntity<>(helloString,HttpStatus.OK);
     }
