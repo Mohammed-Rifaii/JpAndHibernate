@@ -16,3 +16,19 @@ spring:
 customer:
   variable:
     get: HelloWorld
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    env:
+      enabled: true
+
+info:
+  name:
+    app: first-crud
+    description: first crud description
+    version: 3.0.1
+
