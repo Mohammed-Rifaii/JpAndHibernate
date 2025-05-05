@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/trainingJPA
@@ -13,6 +15,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+  security:
+    user:
+      name: mohammed
+      password: rifaii
+
 customer:
   variable:
     get: HelloWorld
@@ -22,6 +29,7 @@ management:
     web:
       exposure:
         include: "*"
+        exclude: health,info
   info:
     env:
       enabled: true
@@ -30,5 +38,5 @@ info:
   name:
     app: first-crud
     description: first crud description
-    version: 3.0.1
+    version: 3.0.2
 
