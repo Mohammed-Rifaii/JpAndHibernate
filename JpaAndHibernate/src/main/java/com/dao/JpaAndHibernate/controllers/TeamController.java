@@ -4,6 +4,7 @@ import com.dao.JpaAndHibernate.domain.DTO.TeamDTO;
 import com.dao.JpaAndHibernate.domain.TeamEntity;
 import com.dao.JpaAndHibernate.mapper.Mapper;
 import com.dao.JpaAndHibernate.services.TeamService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class TeamController {
     private TeamService teamService;
     private Mapper<TeamEntity,TeamDTO> teamMapperImp;
-
+    @Autowired
     public TeamController(TeamService teamService,  Mapper<TeamEntity,TeamDTO> teamMapperImp){
         this.teamMapperImp =teamMapperImp;
         this.teamService = teamService;

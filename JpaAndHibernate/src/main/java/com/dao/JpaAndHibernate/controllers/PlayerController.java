@@ -5,6 +5,7 @@ import com.dao.JpaAndHibernate.mapper.Mapper;
 import com.dao.JpaAndHibernate.domain.PlayerEntity;
 import com.dao.JpaAndHibernate.services.PlayerService;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class PlayerController {
 
     private Mapper<PlayerEntity,PlayerDTO> playerMapperImpl;
     private PlayerService playerService;
+    @Autowired
     public PlayerController(PlayerService playerService,Mapper<PlayerEntity,PlayerDTO> playerMapperImpl){
         this.playerService = playerService;
         this.playerMapperImpl = playerMapperImpl;
