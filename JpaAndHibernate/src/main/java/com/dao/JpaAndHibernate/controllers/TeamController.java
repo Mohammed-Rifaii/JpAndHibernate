@@ -3,7 +3,7 @@ package com.dao.JpaAndHibernate.controllers;
 import com.dao.JpaAndHibernate.domain.DTO.TeamDTO;
 import com.dao.JpaAndHibernate.domain.TeamEntity;
 import com.dao.JpaAndHibernate.mapper.Mapper;
-import com.dao.JpaAndHibernate.services.impl.TeamServiceImpl;
+import com.dao.JpaAndHibernate.services.TeamService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,17 +17,17 @@ import java.util.stream.Collectors;
 @RestController
 public class TeamController {
 
-    private TeamServiceImpl teamServiceImpl;
+    private TeamService teamService;
     private Mapper<TeamEntity,TeamDTO> teamMapperImp;
 
-    public TeamController(TeamServiceImpl teamServiceImpl,  Mapper<TeamEntity,TeamDTO> teamMapperImp){
+    public TeamController(TeamService teamService,  Mapper<TeamEntity,TeamDTO> teamMapperImp){
         this.teamMapperImp =teamMapperImp;
-        this.teamServiceImpl = teamServiceImpl;
+        this.teamService = teamService;
     }
     @PostMapping("/teams")
     public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO teamDTO){
     TeamEntity teamRetrievedEntity = teamMapperImp.mapFrom(teamDTO);
-    TeamEntity savedTeamEntity = teamServiceImpl.save(teamRetrievedEntity);
+    TeamEntity savedTeamEntity = teamService.save(teamRetrievedEntity);
 
     return new ResponseEntity<>(teamMapperImp.mapTo(savedTeamEntity),HttpStatus.CREATED);
     }
@@ -35,7 +35,7 @@ public class TeamController {
 
     @GetMapping("/teams")
     public Page<TeamDTO> getAllTeams(Pageable pageable){
-        Page<TeamEntity> teams= teamServiceImpl.findAllTeams(pageable);
+        Page<TeamEntity> teams= teamService.findAllTeams(pageable);
 
         return teams.map(teamMapperImp::mapTo);
 
@@ -43,7 +43,7 @@ public class TeamController {
 
     @GetMapping("/teams/{id}")
     public ResponseEntity<TeamDTO> getSepecficTeam(@PathVariable("id")Long id){
-        Optional<TeamEntity> foundteam = teamServiceImpl.findTeamById(id);
+        Optional<TeamEntity> foundteam = teamService.findTeamById(id);
         return foundteam.map(foundTeams -> {
             TeamDTO teamDTO = teamMapperImp.mapTo(foundTeams);
             return new ResponseEntity<>(teamDTO,HttpStatus.OK);
@@ -53,14 +53,14 @@ public class TeamController {
     @PutMapping("/teams/{id}")
     public ResponseEntity<TeamDTO> fullUpdateTeam(@PathVariable("id") Long id,@RequestBody TeamDTO teamDTO){
 
-        if(!teamServiceImpl.existId(id))
+        if(!teamService.existId(id))
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else{
             teamDTO.setId(id);
             TeamEntity teamEntity = teamMapperImp.mapFrom(teamDTO);
-            TeamEntity savedTeamEntity = teamServiceImpl.save(teamEntity);
+            TeamEntity savedTeamEntity = teamService.save(teamEntity);
 
             return new ResponseEntity<>(teamMapperImp.mapTo(savedTeamEntity),
                     HttpStatus.OK);
@@ -73,12 +73,12 @@ public class TeamController {
             @PathVariable("id") Long id,
             @RequestBody TeamDTO teamDTO
     ){
-        if(!teamServiceImpl.existId(id)){
+        if(!teamService.existId(id)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else{
             TeamEntity teamEntity = teamMapperImp.mapFrom(teamDTO);
-            TeamEntity savedTeamEntity = teamServiceImpl.updateTeamPartially(id,teamEntity);
+            TeamEntity savedTeamEntity = teamService.updateTeamPartially(id,teamEntity);
             return new ResponseEntity<>(teamMapperImp.mapTo(savedTeamEntity),HttpStatus.OK);
         }
     }
@@ -88,12 +88,12 @@ public class TeamController {
             @PathVariable("id") Long id
     )
     {
-        if (!teamServiceImpl.existId(id))
+        if (!teamService.existId(id))
         {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        teamServiceImpl.deleteById(id);
+        teamService.deleteById(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
