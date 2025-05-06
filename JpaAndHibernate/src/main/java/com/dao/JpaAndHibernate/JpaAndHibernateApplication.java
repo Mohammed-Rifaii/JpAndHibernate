@@ -19,7 +19,7 @@ public class JpaAndHibernateApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JpaAndHibernateApplication.class, args);
 	}
-
+// Just adding note
 /*		@PostConstruct
 	public void init() {
 	List<Map<String,Object>> result1 = jdbcTemplate.queryForList("select * from player");
